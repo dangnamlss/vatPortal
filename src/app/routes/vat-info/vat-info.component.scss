@@ -22,3 +22,27 @@
 .clickable-row {
   cursor: pointer;
 }
+
+.active {
+  td {
+    background-color: #f0f0f0;
+  }
+}
+
+.invoice-table {
+
+  overflow-x: auto;
+  .table-container {
+    min-width: 463px;
+    table {
+      width: 100%;
+    }
+  }
+
+}
+
+@media screen and (max-width: 991px) {
+  .right-col {
+    display: none !important;
+  }
+}

@@ -1,38 +1,72 @@
 <div class="container">
   <div class="row">
-    <div class="col-8 left-col">
+    <div class="col-lg-8 left-col">
       <div class="row">
-        <input type="text">
-
+        <div class="col-md-5 mb-2"><input type="text" [(ngModel)]="reservationId" class="form-control" placeholder="Số hoá đơn"></div>
+        <div class="col-md-3 col-6 mb-2">
+          <div class="input-group">
+            <input
+              class="form-control"
+              placeholder="Từ ngày"
+              name="dp"
+              ngbDatepicker
+              #d1="ngbDatepicker"
+              [(ngModel)]="fromDate"
+            />
+            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d1.toggle()" type="button"></button>
+          </div>
+        </div>
+        <div class="col-md-3 col-6 mb-2">
+          <div class="input-group">
+            <input
+              class="form-control"
+              placeholder="Đến ngày"
+              name="dp2"
+              ngbDatepicker
+              #d2="ngbDatepicker"
+              [(ngModel)]="toDate"
+            />
+            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button"></button>
+          </div>
+        </div>
+        <div class="col-md-1 mb-2">
+          <button (click)="searchInvoice()" type="button" class="btn btn-primary">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
       </div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Số hoá đơn</th>
-            <th scope="col">Tổng tiền</th>
-            <th scope="col">Thời gian tạo</th>
-            <th scope="col">Người tạo</th>
-            <th scope="col" class="text-center">Đã tạo hoá đơn VAT</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="clickable-row" (click)="selectInvoice(invoice)" *ngFor="let invoice of listInvoices">
-            <th scope="row">{{invoice.reservation_id}}</th>
-            <td>
-              {{invoice.total}}
-            </td>
-            <td>{{invoice.created_at}}</td>
-            <td>{{invoice.created_by}}</td>
-            <td>
-              <div class="d-flex justify-content-center">
-                <input [(ngModel)]="invoice.include_vat" class="form-check-input" disabled="" type="checkbox" value="" id="flexCheckDefault">
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="invoice-table">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Số hoá đơn</th>
+                <th scope="col">Tổng tiền</th>
+                <th scope="col">Thời gian tạo</th>
+                <th scope="col">Người tạo</th>
+                <th scope="col" class="text-center">Đã tạo hoá đơn VAT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="clickable-row" [ngClass]="{'active' : i === selectedRowId}" (click)="handleSelectRow(invoice, i, content)" *ngFor="let invoice of listInvoices; let i = index">
+                <td scope="row">{{invoice.reservation_id}}</td>
+                <td>
+                  {{invoice.total}}
+                </td>
+                <td>{{invoice.created_at}}</td>
+                <td>{{invoice.created_by}}</td>
+                <td>
+                  <div class="d-flex justify-content-center">
+                    <input [(ngModel)]="invoice.include_vat" class="form-check-input" disabled="" type="checkbox" value="" id="flexCheckDefault">
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <div class="col-4 right-col">
+    <div class="col-lg-4 right-col">
       <div class="card invoice-info-wrapper">
         <div class="card-body">
           <h5 class="card-title mb-4">Thông tin hoá đơn</h5>
@@ -41,7 +75,7 @@
               Số hoá đơn: &nbsp;
             </span>
             <span>
-              4218560
+              {{selectedInvoice.reservation_id}}
             </span>
           </div>
           <div class="d-flex mb-3">
@@ -49,7 +83,7 @@
               Tổng tiền: &nbsp;
             </span>
             <span>
-              50,000
+              {{selectedInvoice.total}}
             </span>
           </div>
           <div class="d-flex mb-3">
@@ -57,7 +91,7 @@
               Thời gian tạo: &nbsp;
             </span>
             <span>
-              10:04 24/07/2024
+              {{selectedInvoice.created_at}}
             </span>
           </div>
           <div class="d-flex mb-3">
@@ -65,7 +99,7 @@
               Người tạo: &nbsp;
             </span>
             <span>
-              huyendt
+              {{selectedInvoice.created_by}}
             </span>
           </div>
         </div>
@@ -98,3 +132,73 @@
     </div>
   </div>
 </div>
+
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<div class="card invoice-info-wrapper mb-2">
+      <div class="card-body">
+        <h5 class="card-title mb-4">Thông tin hoá đơn</h5>
+        <div class="d-flex mb-3">
+          <span class="label-bold">
+            Số hoá đơn: &nbsp;
+          </span>
+          <span>
+            {{selectedInvoice.reservation_id}}
+          </span>
+        </div>
+        <div class="d-flex mb-3">
+          <span class="label-bold">
+            Tổng tiền: &nbsp;
+          </span>
+          <span>
+            {{selectedInvoice.total}}
+          </span>
+        </div>
+        <div class="d-flex mb-3">
+          <span class="label-bold">
+            Thời gian tạo: &nbsp;
+          </span>
+          <span>
+            {{selectedInvoice.created_at}}
+          </span>
+        </div>
+        <div class="d-flex mb-3">
+          <span class="label-bold">
+            Người tạo: &nbsp;
+          </span>
+          <span>
+            {{selectedInvoice.created_by}}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="card vat-info-wrapper">
+      <div class="card-body">
+        <h5 class="card-title mb-4">Điền thông tin VAT</h5>
+        <div class="mb-3">
+          <label class="form-label">Tên công ty</label>
+          <input [(ngModel)]="vatInfo.company_name" type="text" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Địa chỉ</label>
+          <input [(ngModel)]="vatInfo.address" type="text" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Mã số thuế</label>
+          <input [(ngModel)]="vatInfo.vat_no" type="text" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Email nhận Hoá đơn</label>
+          <input [(ngModel)]="vatInfo.email" type="email" class="form-control">
+        </div>
+        <button (click)="submitVatInfo()" type="button" class="btn btn-success">
+          <i class="bi bi-plus-circle label-bold"></i>
+          Gửi thông tin VAT
+        </button>
+      </div>
+    </div>
+	</div>
+</ng-template>
