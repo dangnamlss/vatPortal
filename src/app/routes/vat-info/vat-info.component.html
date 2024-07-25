@@ -1,0 +1,100 @@
+<div class="container">
+  <div class="row">
+    <div class="col-8 left-col">
+      <div class="row">
+        <input type="text">
+
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Số hoá đơn</th>
+            <th scope="col">Tổng tiền</th>
+            <th scope="col">Thời gian tạo</th>
+            <th scope="col">Người tạo</th>
+            <th scope="col" class="text-center">Đã tạo hoá đơn VAT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="clickable-row" (click)="selectInvoice(invoice)" *ngFor="let invoice of listInvoices">
+            <th scope="row">{{invoice.reservation_id}}</th>
+            <td>
+              {{invoice.total}}
+            </td>
+            <td>{{invoice.created_at}}</td>
+            <td>{{invoice.created_by}}</td>
+            <td>
+              <div class="d-flex justify-content-center">
+                <input [(ngModel)]="invoice.include_vat" class="form-check-input" disabled="" type="checkbox" value="" id="flexCheckDefault">
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-4 right-col">
+      <div class="card invoice-info-wrapper">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Thông tin hoá đơn</h5>
+          <div class="d-flex mb-3">
+            <span class="label-bold">
+              Số hoá đơn: &nbsp;
+            </span>
+            <span>
+              4218560
+            </span>
+          </div>
+          <div class="d-flex mb-3">
+            <span class="label-bold">
+              Tổng tiền: &nbsp;
+            </span>
+            <span>
+              50,000
+            </span>
+          </div>
+          <div class="d-flex mb-3">
+            <span class="label-bold">
+              Thời gian tạo: &nbsp;
+            </span>
+            <span>
+              10:04 24/07/2024
+            </span>
+          </div>
+          <div class="d-flex mb-3">
+            <span class="label-bold">
+              Người tạo: &nbsp;
+            </span>
+            <span>
+              huyendt
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="card vat-info-wrapper">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Điền thông tin VAT</h5>
+          <div class="mb-3">
+            <label class="form-label">Tên công ty</label>
+            <input [(ngModel)]="vatInfo.company_name" type="text" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Địa chỉ</label>
+            <input [(ngModel)]="vatInfo.address" type="text" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Mã số thuế</label>
+            <input [(ngModel)]="vatInfo.vat_no" type="text" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email nhận Hoá đơn</label>
+            <input [(ngModel)]="vatInfo.email" type="email" class="form-control">
+          </div>
+          <button (click)="submitVatInfo()" type="button" class="btn btn-success">
+            <i class="bi bi-plus-circle label-bold"></i>
+            Gửi thông tin VAT
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+.container {
+  padding-top: 80px;
+  .right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+    .card {
+      width: 100%;
+    }
+  }
+  // .invoice-info-wrapper {
+
+  // }
+
+  // .vat-info-wrapper {
+
+  // }
+}
+
+.clickable-row {
+  cursor: pointer;
+}
